@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import glob
+import sys
 from typing import List
 from dotenv import load_dotenv
 from multiprocessing import Pool
@@ -32,11 +33,15 @@ load_dotenv()
 
 # Load environment variables
 persist_directory = os.environ.get('PERSIST_DIRECTORY')
-source_directory = os.environ.get('SOURCE_DIRECTORY', 'source_documents')
 embeddings_model_name = os.environ.get('EMBEDDINGS_MODEL_NAME')
+source_directory = os.environ.get('SOURCE_DIRECTORY', 'source_documents')
 chunk_size = 500
 chunk_overlap = 50
 
+# Folder to read or default
+num_args = len(sys.argv)
+if num_args == 2:
+    source_directory = sys.argv[1]
 
 # Custom document loaders
 class MyElmLoader(UnstructuredEmailLoader):
